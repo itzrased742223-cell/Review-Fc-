@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review FC | Football Players</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <div class="logo">REVIEW <span>FC</span></div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#players">Players</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#about">About</a>
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-text">
+
+    <p class="small-title">⚽ THE HOME OF FOOTBALL REVIEWS</p>
+
+    <h1>
+      EVERY PLAYER.<br>
+      <span>ONE REVIEW.</span>
+    </h1>
+
+    <p class="description">
+      Search football players, check ratings,
+      read reviews and discover their profiles.
+    </p>
+
+    <a href="#players" class="button">
+      EXPLORE PLAYERS →
+    </a>
+
+  </div>
+
+  <div class="hero-ball">⚽</div>
+</section>
+
+
+<section class="players" id="players">
+
+  <p class="section-title">PLAYER DATABASE</p>
+
+  <h2>All Players</h2>
+
+  <div class="search-box">
+    <input
+      type="text"
+      id="playerSearch"
+      placeholder="Search player..."
+      onkeyup="searchPlayers()"
+    >
+  </div>
+
+
+  <div class="player-grid" id="playerGrid">
+
+    <div class="player-card">
+      <div class="player-photo">🇵🇹</div>
+      <h3>Cristiano Ronaldo</h3>
+      <p>Portugal • Forward</p>
+      <div class="rating">9.5 / 10</div>
+      <button onclick="showReview('Cristiano Ronaldo')">
+        View Review
+      </button>
+    </div>
+
+
+    <div class="player-card">
+      <div class="player-photo">🇦🇷</div>
+      <h3>Lionel Messi</h3>
+      <p>Argentina • Forward</p>
+      <div class="rating">9.6 / 10</div>
+      <button onclick="showReview('Lionel Messi')">
+        View Review
+      </button>
+    </div>
+
+
+    <div class="player-card">
+      <div class="player-photo">🇫🇷</div>
+      <h3>Kylian Mbappé</h3>
+      <p>France • Forward</p>
+      <div class="rating">9.1 / 10</div>
+      <button onclick="showReview('Kylian Mbappé')">
+        View Review
+      </button>
+    </div>
+
+
+    <div class="player-card">
+      <div class="player-photo">🇳🇴</div>
+      <h3>Erling Haaland</h3>
+      <p>Norway • Forward</p>
+      <div class="rating">9.0 / 10</div>
+      <button onclick="showReview('Erling Haaland')">
+        View Review
+      </button>
+    </div>
+
+
+    <div class="player-card">
+      <div class="player-photo">🇧🇷</div>
+      <h3>Vinícius Júnior</h3>
+      <p>Brazil • Forward</p>
+      <div class="rating">8.9 / 10</div>
+      <button onclick="showReview('Vinícius Júnior')">
+        View Review
+      </button>
+    </div>
+
+
+    <div class="player-card">
+      <div class="player-photo">🇪🇬</div>
+      <h3>Mohamed Salah</h3>
+      <p>Egypt • Forward</p>
+      <div class="rating">8.8 / 10</div>
+      <button onclick="showReview('Mohamed Salah')">
+        View Review
+      </button>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section class="reviews" id="reviews">
+
+  <p class="section-title">REVIEWS</p>
+
+  <h2>Player Reviews</h2>
+
+  <div class="review-box" id="reviewBox">
+    <h3>Select a player</h3>
+    <p>
+      Click "View Review" on any player to see their review.
+    </p>
+  </div>
+
+</section>
+
+
+<section class="about" id="about">
+
+  <p class="section-title">ABOUT</p>
+
+  <h2>Review FC</h2>
+
+  <p>
+    Football players, ratings and reviews —
+    all in one place.
+  </p>
+
+</section>
+
+
+<footer>
+
+  <div class="logo">
+    REVIEW <span>FC</span>
+  </div>
+
+  <p>Football. Reviews. Passion.</p>
+
+  <small>© 2026 Review FC</small>
+
+</footer>
+
+
+<script>
+  const players = document.querySelectorAll(".player-card");
+
+function searchPlayers() {
+    const input = document
+        .getElementById("playerSearch")
+        .value
+        .toLowerCase();
+
+    players.forEach(player => {
+        const name = player.querySelector("h3").innerText.toLowerCase();
+
+        player.style.display =
+            name.includes(input) ? "block" : "none";
+    });
+}
+
+function showReview(player) {
+    const reviewBox = document.getElementById("reviewBox");
+
+    reviewBox.innerHTML = `
+        <h3>${player}</h3>
+        <p>
+            Review FC player profile for ${player}.
+            Performance, playing style, strengths and
+            match impact will appear here.
+        </p>
+
+        <div class="big-rating">
+            ★ PLAYER REVIEW
+        </div>
+    `;
+
+    reviewBox.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+</script>
+
+</body>
+</html>
