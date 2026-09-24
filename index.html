@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -20,7 +21,9 @@
   </nav>
 </header>
 
+
 <section class="hero" id="home">
+
   <div class="hero-text">
 
     <p class="small-title">⚽ THE HOME OF FOOTBALL REVIEWS</p>
@@ -42,6 +45,7 @@
   </div>
 
   <div class="hero-ball">⚽</div>
+
 </section>
 
 
@@ -52,80 +56,118 @@
   <h2>All Players</h2>
 
   <div class="search-box">
+
     <input
       type="text"
       id="playerSearch"
-      placeholder="Search player..."
+      placeholder="Search any football player..."
       onkeyup="searchPlayers()"
     >
+
   </div>
 
 
   <div class="player-grid" id="playerGrid">
 
     <div class="player-card">
+
       <div class="player-photo">🇵🇹</div>
+
       <h3>Cristiano Ronaldo</h3>
+
       <p>Portugal • Forward</p>
+
       <div class="rating">9.5 / 10</div>
+
       <button onclick="showReview('Cristiano Ronaldo')">
         View Review
       </button>
+
     </div>
 
 
     <div class="player-card">
+
       <div class="player-photo">🇦🇷</div>
+
       <h3>Lionel Messi</h3>
+
       <p>Argentina • Forward</p>
+
       <div class="rating">9.6 / 10</div>
+
       <button onclick="showReview('Lionel Messi')">
         View Review
       </button>
+
     </div>
 
 
     <div class="player-card">
+
       <div class="player-photo">🇫🇷</div>
+
       <h3>Kylian Mbappé</h3>
+
       <p>France • Forward</p>
+
       <div class="rating">9.1 / 10</div>
+
       <button onclick="showReview('Kylian Mbappé')">
         View Review
       </button>
+
     </div>
 
 
     <div class="player-card">
+
       <div class="player-photo">🇳🇴</div>
+
       <h3>Erling Haaland</h3>
+
       <p>Norway • Forward</p>
+
       <div class="rating">9.0 / 10</div>
+
       <button onclick="showReview('Erling Haaland')">
         View Review
       </button>
+
     </div>
 
 
     <div class="player-card">
+
       <div class="player-photo">🇧🇷</div>
+
       <h3>Vinícius Júnior</h3>
+
       <p>Brazil • Forward</p>
+
       <div class="rating">8.9 / 10</div>
+
       <button onclick="showReview('Vinícius Júnior')">
         View Review
       </button>
+
     </div>
 
 
     <div class="player-card">
+
       <div class="player-photo">🇪🇬</div>
+
       <h3>Mohamed Salah</h3>
+
       <p>Egypt • Forward</p>
+
       <div class="rating">8.8 / 10</div>
+
       <button onclick="showReview('Mohamed Salah')">
         View Review
       </button>
+
     </div>
 
   </div>
@@ -140,10 +182,13 @@
   <h2>Player Reviews</h2>
 
   <div class="review-box" id="reviewBox">
+
     <h3>Select a player</h3>
+
     <p>
       Click "View Review" on any player to see their review.
     </p>
+
   </div>
 
 </section>
@@ -177,43 +222,156 @@
 
 
 <script>
-  const players = document.querySelectorAll(".player-card");
 
-function searchPlayers() {
-    const input = document
-        .getElementById("playerSearch")
-        .value
-        .toLowerCase();
+async function searchPlayers() {
 
-    players.forEach(player => {
-        const name = player.querySelector("h3").innerText.toLowerCase();
+  const input = document
+    .getElementById("playerSearch")
+    .value
+    .trim();
 
-        player.style.display =
-            name.includes(input) ? "block" : "none";
-    });
-}
+  const grid = document.getElementById("playerGrid");
 
-function showReview(player) {
-    const reviewBox = document.getElementById("reviewBox");
 
-    reviewBox.innerHTML = `
-        <h3>${player}</h3>
-        <p>
-            Review FC player profile for ${player}.
-            Performance, playing style, strengths and
-            match impact will appear here.
-        </p>
+  // Empty search
+  if (input.length === 0) {
 
-        <div class="big-rating">
-            ★ PLAYER REVIEW
+    return;
+
+  }
+
+
+  // Search needs at least 2 letters
+  if (input.length < 2) {
+
+    return;
+
+  }
+
+
+  grid.innerHTML = "<p>🔎 Searching players...</p>";
+
+
+  try {
+
+    const response = await fetch(
+      `/api/players?search=${encodeURIComponent(input)}`
+    );
+
+
+    const data = await response.json();
+
+    const results = data.response || [];
+
+
+    if (results.length === 0) {
+
+      grid.innerHTML = `
+        <p>No players found.</p>
+      `;
+
+      return;
+
+    }
+
+
+    grid.innerHTML = results.map(item => {
+
+      const player = item.player;
+
+
+      return `
+
+        <div class="player-card">
+
+          <div class="player-photo">
+
+            <img
+              src="${player.photo || ""}"
+              alt="${player.name}"
+              style="
+                width:100%;
+                height:100%;
+                object-fit:cover;
+                border-radius:12px;
+              "
+            >
+
+          </div>
+
+
+          <h3>${player.name}</h3>
+
+
+          <p>
+            ${player.nationality || "Unknown"}
+            •
+            ${player.age || "N/A"} years
+          </p>
+
+
+          <div class="rating">
+            ⚽ FOOTBALL PLAYER
+          </div>
+
+
+          <button
+            onclick="showReview('${player.name.replace(/'/g, "\\'")}')"
+          >
+            View Review
+          </button>
+
         </div>
+
+      `;
+
+    }).join("");
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    grid.innerHTML = `
+      <p>❌ Unable to load players.</p>
     `;
 
-    reviewBox.scrollIntoView({
-        behavior: "smooth"
-    });
+  }
+
 }
+
+
+function showReview(player) {
+
+  const reviewBox =
+    document.getElementById("reviewBox");
+
+
+  reviewBox.innerHTML = `
+
+    <h3>${player}</h3>
+
+    <p>
+      Review FC player profile for ${player}.
+      Performance, playing style, strengths and
+      match impact will appear here.
+    </p>
+
+    <div class="big-rating">
+      ★ PLAYER REVIEW
+    </div>
+
+  `;
+
+
+  reviewBox.scrollIntoView({
+    behavior: "smooth"
+  });
+
+}
+
 </script>
 
 </body>
+</html>
 </html>
